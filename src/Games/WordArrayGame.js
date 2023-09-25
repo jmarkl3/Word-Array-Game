@@ -6,12 +6,16 @@ function WordArrayGame() {
   const [array, setArray] = useState([])  
 
   // The current position in the 2d array
-  const [count, setCount] = useState(0)
-  const [indexCount, setIndexCount] = useState(0)    
+  const [wordIndex, setWordIndex] = useState(0)
+  const [arrayIndex, setArrayIndex] = useState(0)    
 
   // Settings
   const [arrayLength, setArrayLength] = useState(4)
   const [arrayDepth, setArrayDepth] = useState(4)
+
+  // keep track of number in a row for changing difficulty
+  const [correctStreak, setCorrectStreak] = useState(0)
+
 
   // The game mode
   const [started, setStarted] = useState(false)
@@ -114,7 +118,7 @@ function WordArrayGame() {
     console.log("array")
     console.log(array)
     console.log("counter states:")
-    console.log("counter "+count+" index count "+indexCount)
+    console.log("counter "+wordIndex+" index wordIndex "+arrayIndex)
   }
   setUpKeyPress()
   function setUpKeyPress(){
@@ -146,11 +150,11 @@ function WordArrayGame() {
     if(!started || keyInput)
       return
 
-    // Increment the count to see the next word
-    setCount(count+1)          
+    // Increment the wordIndex to see the next word
+    setWordIndex(wordIndex+1)          
 
     // If all words have shown start input mode
-    if(count+1 == array[indexCount].length)
+    if(wordIndex+1 == array[arrayIndex].length)
       startInput(0)    
     
 
@@ -215,8 +219,8 @@ function WordArrayGame() {
     createArray()
     
     // Look at the first word in the top word array
-    setCount(0)
-    setIndexCount(0)
+    setWordIndex(0)
+    setArrayIndex(0)
 
     // Hide the input display
     setKeyInput(false)
@@ -236,29 +240,29 @@ function WordArrayGame() {
     document.getElementById("inputField").focus()
     
     // Display a message so user knows what to do
-    displayMessage("type the "+array[indexCount].length+" words in order from the list "+depth+" back")    
+    displayMessage("type the "+array[arrayIndex].length+" words in order from the list "+depth+" back")    
     // Now every time input field changes inputChange() will be called
 
   }
   function checkInputInprocess2(input, array){
     
-    console.log("in input inprocess 2")
 
     // Create an array from the input words and compare it to the state array
+    let totalWordsInArray = array[arrayIndex].length
     var inputWordsArray = input.split(' ')    
-    var count = 0, correctCount = 0
+    var wordIndex = 0, correctCount = 0
     inputWordsArray.forEach(word=>{
-      if(array[indexCount][count++] === word)
+      if(array[arrayIndex][wordIndex++] === word)
       correctCount++          
     })
     
     // Display the current number of correctly entered words and total entered words every time a letter is input
-    setCorrect({correct:correctCount, total:array[indexCount].length})    
+    setCorrect({correct:correctCount, total:totalWordsInArray})    
 
     // When we get to the furthest depth set a flag variable that says were on our way back
     //  then start decrementing counter. If flag is set and we get back to top, create new array and reset flag
 
-    // if(!goingUp && inputWordsArray.length > array[indexCount].length) (if nedt depth is within bounds of array)         
+    // if(!goingUp && inputWordsArray.length > array[arrayIndex].length) (if nedt depth is within bounds of array)         
       // if in bounds
         // go deeper
       // else
@@ -271,10 +275,16 @@ function WordArrayGame() {
       
 
     // If the number of words input is greater than the number of words in the array, input is complete
-    if(inputWordsArray.length > array[indexCount].length){
-      console.log("checked array length")
+    if(inputWordsArray.length > totalWordsInArray){
+
+        // If the number of correct words equals the number of words in the array it adds to the streak and possibly increaces the difficulty
+        if(correctCount == totalWordsInArray)
+            correctStreakAdjuster(true)
+        else
+            correctStreakAdjuster(false)
+
       // If (still moving deeper) and (next depth is within bounds of array and the max depth setting) we want to ask for the next deeper
-      if(!movingShallow && (indexCount+1 < array.length) && (indexCount+1 < arrayDepth))
+      if(!movingShallow && (arrayIndex+1 < array.length) && (arrayIndex+1 < arrayDepth))
         // Sets the depth one deeper and starts input
         oneDeeper()
       // Else sart going more shallow
@@ -284,8 +294,9 @@ function WordArrayGame() {
         setmovingShallow(true)
 
         // If back at start, make a new array and start reading
-        if(indexCount<=0)
-          toReadingMode()
+        if(arrayIndex<=0){
+            toReadingMode()
+        }
         // Else read one more shallow
         else
           oneUp()
@@ -296,16 +307,16 @@ function WordArrayGame() {
 
     // Create an array from the input words and compare it to the state array
     var inputWordsArray = input.split(' ')    
-    var count = 0, correct = 0
+    var wordIndex = 0, correct = 0
     inputWordsArray.forEach(word=>{
-      if(array[indexCount][count++] === word)
+      if(array[arrayIndex][wordIndex++] === word)
         correct++          
       })
       
       // When we get to the furthest depth set a flag variable that says were on our way back
       //  then start decrementing counter. If flag is set and we get back to top, create new array and reset flag
 
-      // if(!goingUp && inputWordsArray.length > array[indexCount].length) (if nedt depth is within bounds of array)         
+      // if(!goingUp && inputWordsArray.length > array[arrayIndex].length) (if nedt depth is within bounds of array)         
         // if in bounds
           // go deeper
         // else
@@ -318,28 +329,28 @@ function WordArrayGame() {
         
 
       // If the number of words input is greater than the number of words in the array, input is complete
-      if(inputWordsArray.length > array[indexCount].length)
+      if(inputWordsArray.length > array[arrayIndex].length)
         
         // If then next depth is within bounds of array and set max depth we want to ask about it
-        if((indexCount+1 < array.length) && indexCount+1 < arrayDepth){
+        if((arrayIndex+1 < array.length) && arrayIndex+1 < arrayDepth){
           
           // Add the current to the log          
           var tempAL = accuracyLog
-          tempAL.push("input "+correct.correct+" of "+array[indexCount].length+" correctly at depth "+indexCount)                                      
+          tempAL.push("input "+correct.correct+" of "+array[arrayIndex].length+" correctly at depth "+arrayIndex)                                      
           setAccuracyLog(tempAL)
 
           // Doing this before the set state because it will probably call before state is updated if put after, but not always
-          startInput(indexCount+1)
+          startInput(arrayIndex+1)
 
           // Go to the next depth level, then start input
-          setIndexCount(indexCount + 1)
+          setArrayIndex(arrayIndex + 1)
         }
         // If all arrays have been input start reading next array
         else{
           
           // Add the current accuracy record to the log then denote the end of this section with a line          
           var tempAL = accuracyLog
-          tempAL.push("input "+correct.correct+" of "+array[indexCount].length+" correctly at depth "+indexCount)                            
+          tempAL.push("input "+correct.correct+" of "+array[arrayIndex].length+" correctly at depth "+arrayIndex)                            
           // Pushing onto array with itteration+1 then updating state after
           tempAL.push("itteration "+(itteration+1)+" complete")     
           tempAL.push(" "+(getSeconds()-startSeconds)+" seconds since game start")
@@ -355,7 +366,21 @@ function WordArrayGame() {
         }      
 
     // Display the current number of correctly entered words and total entered words
-    setCorrect({correct:correct, total:array[indexCount].length})
+    setCorrect({correct:correct, total:array[arrayIndex].length})
+  }
+  function correctStreakAdjuster(correct){
+    if(correct){
+        if(correctStreak + 1 >= arrayLength){
+            console.log("incremented array length to "+(arrayLength + 1))
+            setArrayLength(arrayLength + 1)
+            setCorrectStreak(0)
+        }else{
+            setCorrectStreak(correctStreak + 1) 
+        }
+    }else{
+        console.log("incorrect line, resetting")
+        setCorrectStreak(0)
+    }
   }
   function oneDeeper(){
 
@@ -363,14 +388,14 @@ function WordArrayGame() {
 
     // Add the current to the log          
     var tempAL = accuracyLog
-    tempAL.push("input "+correct.correct+" of "+array[indexCount].length+" correctly at depth "+indexCount)                                      
+    tempAL.push("input "+correct.correct+" of "+array[arrayIndex].length+" correctly at depth "+arrayIndex)                                      
     setAccuracyLog(tempAL)
 
     // Doing this before the set state because it will probably call before state is updated if put after, but not always
-    startInput(indexCount+1)
+    startInput(arrayIndex+1)
 
     // Go to the next depth level, then start input
-    setIndexCount(indexCount + 1)
+    setArrayIndex(arrayIndex + 1)
   }
   function oneUp(){
 
@@ -378,14 +403,14 @@ function WordArrayGame() {
 
     // Add the current to the log          
     var tempAL = accuracyLog
-    tempAL.push("input "+correct.correct+" of "+array[indexCount].length+" correctly at depth "+indexCount)                                      
+    tempAL.push("input "+correct.correct+" of "+array[arrayIndex].length+" correctly at depth "+arrayIndex)                                      
     setAccuracyLog(tempAL)
 
     // Doing this before the set state because it will probably call before state is updated if put after, but not always
-    startInput(indexCount-1)
+    startInput(arrayIndex-1)
 
     // Go to the next depth level, then start input
-    setIndexCount(indexCount - 1)
+    setArrayIndex(arrayIndex - 1)
   }
   function toReadingMode(){
 
@@ -393,7 +418,7 @@ function WordArrayGame() {
 
     // Add the current accuracy record to the log then denote the end of this section with a line          
     var tempAL = accuracyLog
-    tempAL.push("input "+correct.correct+" of "+array[indexCount].length+" correctly at depth "+indexCount)                                
+    tempAL.push("input "+correct.correct+" of "+array[arrayIndex].length+" correctly at depth "+arrayIndex)                                
     tempAL.push(" ")
     tempAL.push(" "+(getSeconds()-startSeconds)+"seconds since game start:")
     tempAL.push(((getSeconds()-startSeconds)/(itteration+1))+" seconds per itteration: ")     
@@ -670,7 +695,7 @@ function WordArrayGame() {
       <>                  
         {(started && !keyInput) && 
         <div className='wordDisplay'>
-          {array[indexCount][count]}
+          {array[arrayIndex][wordIndex]}
         </div>} 
         {(started && keyInput) && 
           <div>
@@ -683,7 +708,7 @@ function WordArrayGame() {
               </div>
 
               <div className='lastDisplay'>
-                
+
               </div>              
             </div>
           </div>
@@ -691,9 +716,14 @@ function WordArrayGame() {
         {!started && <div className='button buttonBig' onClick={start}>Start</div>}                                
         {false && <img src={require("./images/gearicon80px.png")} className='messageDisplay' style={{height:"20px", objectFit:"contain"}}></img>}
         <div className='messageDisplay'>
-          <div id='messageDisplay'></div>
-          
+          <div id='messageDisplay'>
+            
+          </div>
         </div>
+        <div className='bottomRight' title={"Streak: "+correctStreak+". When the streak == the array length, the array length increments."}>
+            {correctStreak}
+        </div>
+
         {/* <div className='circleButtonHolder'>
           <div className='infoButton'>
             ?
@@ -704,7 +734,7 @@ function WordArrayGame() {
           <div className='infoButton'>
             H
             <div className='infoButtonDisplay'>
-              {array.length>0 && array[indexCount][0]}
+              {array.length>0 && array[arrayIndex][0]}
             </div>            
           </div>
           <div className='infoButton'>

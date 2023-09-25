@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react'
 import gear from './images/gearicon80px.png'
-import RandomStuff from './Components/RandomStuff';
 import WordArrayGame from './Games/WordArrayGame';
 
 function App() {
@@ -14,6 +13,7 @@ function App() {
         <div className='circleButtonHolder'>
           <div className='infoButton'>
             <img src={gear}></img>
+            <div className='infoButtonDisplay'></div>
           </div>
         </div>
       </div>

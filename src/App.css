@@ -155,26 +155,30 @@ code {
 
 }
 .infoButtonDisplay{    
-  background-color: gray;
+  /* display: none; */
+  height: 0;
+  width: 0;
+
   color: white;
   border-radius: 3px;
-  border: 1px solid black;
-  display: none;
   position: absolute;   
   bottom: 10px;
   left: 0px;    
   padding: 4px;
-  max-height: 400px;
-  max-width: 320px;  
   overflow-y: auto;
   direction: rtl;
+  transition: 500ms;
+  border: 0px solid black;
+
 }
 .width300{
   width: 300px;
 }
 .infoButton:hover .infoButtonDisplay{
-  
-  display: inline-block; 
+  height: 200px;
+  width: 120px; 
+  background-color: gray;
+  border: 1px solid black;
 }
 .circleButtonHolder{
   height: 20px;
@@ -201,4 +205,11 @@ code {
 }
 .closeButton:hover{
   background-color: rgb(255, 143, 143);
+}
+.bottomRight{
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  color: white;
+  cursor: pointer;
 }
