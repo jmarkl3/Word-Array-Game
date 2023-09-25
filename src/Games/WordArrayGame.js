@@ -15,6 +15,7 @@ function WordArrayGame() {
 
   // keep track of number in a row for changing difficulty
   const [correctStreak, setCorrectStreak] = useState(0)
+  const [points, setPoints] = useState(0)
 
 
   // The game mode
@@ -277,6 +278,8 @@ function WordArrayGame() {
     // If the number of words input is greater than the number of words in the array, input is complete
     if(inputWordsArray.length > totalWordsInArray){
 
+        addPoints(totalWordsInArray, arrayIndex, correctCount)
+
         // If the number of correct words equals the number of words in the array it adds to the streak and possibly increaces the difficulty
         if(correctCount == totalWordsInArray)
             correctStreakAdjuster(true)
@@ -381,6 +384,10 @@ function WordArrayGame() {
         console.log("incorrect line, resetting")
         setCorrectStreak(0)
     }
+  }
+  function addPoints(words, depth, correctWords){
+    let newPoints = (words * (depth + 1)) - (2 * (words - correctWords))
+    setPoints(points + newPoints)
   }
   function oneDeeper(){
 
@@ -720,8 +727,14 @@ function WordArrayGame() {
             
           </div>
         </div>
-        <div className='bottomRight' title={"Streak: "+correctStreak+". When the streak == the array length, the array length increments."}>
-            {correctStreak}
+        <div className='bottomRight'>
+            <div className='inlineBlock' title={"Streak: "+correctStreak+". When the streak == the array length, the array length increments."}>
+                {correctStreak}
+            </div>
+            <div className='inlineBlock' title={"Points: "+correctStreak+" = sum of Array length * depth - (2 * incorrect)"}>
+                {points}
+            </div>
+
         </div>
 
         {/* <div className='circleButtonHolder'>

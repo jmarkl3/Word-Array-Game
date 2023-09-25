@@ -213,3 +213,7 @@ code {
   color: white;
   cursor: pointer;
 }
+.inlineBlock{
+  display: inline-block;
+  margin: 0 10px;
+}
