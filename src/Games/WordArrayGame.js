@@ -667,8 +667,7 @@ function WordArrayGame() {
     setRsw(false)
   }
   return (
-    <div >
-      <div className='appContainer'>                  
+      <>                  
         {(started && !keyInput) && 
         <div className='wordDisplay'>
           {array[indexCount][count]}
@@ -695,7 +694,7 @@ function WordArrayGame() {
           <div id='messageDisplay'></div>
           
         </div>
-        <div className='circleButtonHolder'>
+        {/* <div className='circleButtonHolder'>
           <div className='infoButton'>
             ?
             <div className='infoButtonDisplay width300'>
@@ -746,9 +745,8 @@ function WordArrayGame() {
               <br></br>
             </div>            
           </div>
-        </div>
-      </div>
-    </div>
+        </div> */}
+      </>
   );
 }
 

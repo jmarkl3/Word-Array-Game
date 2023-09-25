@@ -9,7 +9,14 @@ function App() {
     
   return (
     <div className="App">
-      <WordArrayGame></WordArrayGame>
+      <div className='appContainer'>
+        <WordArrayGame></WordArrayGame>
+        <div className='circleButtonHolder'>
+          <div className='infoButton'>
+            <img src={gear}></img>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
