@@ -10,12 +10,6 @@ function App() {
     <div className="App">
       <div className='appContainer'>
         <WordArrayGame></WordArrayGame>
-        <div className='circleButtonHolder'>
-          <div className='infoButton'>
-            <img src={gear}></img>
-            <div className='infoButtonDisplay'></div>
-          </div>
-        </div>
       </div>
     </div>
   );

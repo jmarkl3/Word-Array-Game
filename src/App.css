@@ -158,7 +158,7 @@ code {
   /* display: none; */
   height: 0;
   width: 0;
-
+  opacity: 0;
   color: white;
   border-radius: 3px;
   position: absolute;   
@@ -179,6 +179,8 @@ code {
   width: 120px; 
   background-color: gray;
   border: 1px solid black;
+  opacity: 1;
+
 }
 .circleButtonHolder{
   height: 20px;
@@ -202,9 +204,17 @@ code {
   width: 20px;
   background-color: rgb(255, 187, 187);
   color: white;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 3px;
+  transition: 500ms;
 }
 .closeButton:hover{
   background-color: rgb(255, 143, 143);
+  box-shadow: 0 0 10px rgb(255, 187, 187);
 }
 .bottomRight{
   position: absolute;
@@ -216,4 +226,19 @@ code {
 .inlineBlock{
   display: inline-block;
   margin: 0 10px;
+}
+.window{
+  position: fixed;
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px black;
+  height: 80vh;
+  top: 10vh;
+  width: 80vw;
+  left: 10vw;
+  z-index: 10;
+}
+.chartWindow{
+
 }

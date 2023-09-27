@@ -1,22 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import gear from '../images/gearicon80px.png'
+import Charts from '../Components/Charts'
 
 function WordArrayGame() {
     
-  // The 2d array or word arrays
+  // The 2d array of word arrays
   const [array, setArray] = useState([])  
 
-  // The current position in the 2d array
+  // The current position in the current word array
   const [wordIndex, setWordIndex] = useState(0)
+  // The current position in the 2d array
   const [arrayIndex, setArrayIndex] = useState(0)    
 
-  // Settings
+  // Dynamic settings
   const [arrayLength, setArrayLength] = useState(4)
   const [arrayDepth, setArrayDepth] = useState(4)
 
-  // keep track of number in a row for changing difficulty
+  // Keep track of number in a row for changing difficulty
   const [correctStreak, setCorrectStreak] = useState(0)
+  // Number of points earned in this game session
   const [points, setPoints] = useState(0)
-
 
   // The game mode
   const [started, setStarted] = useState(false)
@@ -32,6 +35,8 @@ function WordArrayGame() {
   const [startSeconds, setStartSeconds] = useState(0)
   const [movingShallow,setmovingShallow] = useState(false)
 
+  // Show or hide windows
+  const [showChart, setShowChart] = useState()
   const [rsw, setRsw] = useState(false)
 
   var infoString = 
@@ -47,8 +52,58 @@ function WordArrayGame() {
 
   // Setup
   useEffect(()=>{
-    //createArray()    
+    //createArray() 
+    setInitialTime()   
+    loadPoints()
   }, [])  
+
+  const startTimeRef = useRef()
+  function setInitialTime(){
+    
+    let date = new Date()
+    startTimeRef.current = date.getFullYear() + "-" + 
+      (date.getMonth() + 1).toString().padStart(2, "0") + 
+      "-" + date.getDate().toString().padStart(2, "0") + 
+      "T" + date.getHours().toString().padStart(2, "0") + ":" + 
+      date.getMinutes().toString().padStart(2, "0") + ":" + 
+      date.getSeconds().toString().padStart(2, "0")
+
+    // To parse it:
+    //let newDate = new Date(startTimeRef.current)
+
+  }
+  // Creates an array of objects with date and points to be given to a recharts chart
+  const datePointArrayRef = useRef()
+  const [datePointArray, setDatePointArray] = useState()
+  function createPointsArray(pointsObject){
+    if(typeof pointsObject !== "object") return
+
+    // Create an object that has date:points (not including time)
+    let datePointsObject = {}
+    Object.entries(pointsObject).forEach(entry => {
+      // Get just the date string without the time
+      let date = entry[0].split("T")[0]
+      // If there is already points for that date add the new amount of points
+      if(datePointsObject[date])
+        datePointsObject[date] += entry[1]
+      // If this is the first time this date has been seen set the points value
+      else
+        datePointsObject[date] = entry[1]
+    })
+
+    // Convert the datePointsObject to an array
+    let datePointArrayTemp = []
+    Object.entries(datePointsObject).forEach(entry => {
+      let datePointObject = {
+        date: entry[0],
+        points: entry[1],
+      }
+      datePointArrayTemp.push(datePointObject)
+    })
+    datePointArrayRef.current = datePointArrayTemp
+    setDatePointArray(datePointArrayTemp)
+    
+  }
   function createArray(){
 
     // This is the list of words that the array will select from
@@ -388,6 +443,39 @@ function WordArrayGame() {
   function addPoints(words, depth, correctWords){
     let newPoints = (words * (depth + 1)) - (2 * (words - correctWords))
     setPoints(points + newPoints)
+
+    // Save the number of points in the db
+
+    // Add the new points to the object that represents all of the users points
+    loadedPointsRef.current[startTimeRef.current] = points + newPoints
+    // console.log("saving points object")
+    // console.log(loadedPointsRef.current)
+    
+    // For the chart
+    createPointsArray(loadedPointsRef.current)
+
+    // Put the updated object in local storeage as a string
+    window.localStorage.setItem("Word-Array-Points", JSON.stringify(loadedPointsRef.current))
+
+  }
+  const loadedPointsRef = useRef({})
+  function loadPoints(){
+
+    let loadedPoints = window.localStorage.getItem("Word-Array-Points")
+    // console.log("loadedPoints string:")
+    // console.log(loadedPoints)
+    // console.log(typeof loadedPoints)
+
+    if(typeof loadedPoints === "string"){
+      loadedPoints = JSON.parse(loadedPoints)
+      // console.log("loaded points parsed: ")
+      // console.log(loadedPoints)
+      loadedPointsRef.current = loadedPoints
+      // For the chart
+      createPointsArray(loadedPointsRef.current)
+    }
+    else
+      console.log("no loaded points")
   }
   function oneDeeper(){
 
@@ -680,7 +768,6 @@ function WordArrayGame() {
     wordString = wordString.replaceAll("  "," ")
     wordString = wordString.replaceAll("  "," ")
     wordString = wordString.replaceAll("  "," ")
-    console.log(wordString)
 
     // var wordsStringArray = wordString.split(' ')
     // var alternator = false
@@ -692,12 +779,7 @@ function WordArrayGame() {
     //})
     //console.log(wordsNoNumbers)
   }
-  function openRSW(){
-    setRsw(true)
-  }
-  function closeRSW(){
-    setRsw(false)
-  }
+
   return (
       <>                  
         {(started && !keyInput) && 
@@ -789,6 +871,15 @@ function WordArrayGame() {
             </div>            
           </div>
         </div> */}
+        {showChart && <Charts name={"Word Array Points"} dataArray={datePointArray} close={()=>setShowChart(false)}></Charts>}
+        <div className='circleButtonHolder'>
+          <div className='infoButton'>
+            <img src={gear}></img>
+            <div className='infoButtonDisplay'>
+              <div className='settingsButton' onClick={()=>setShowChart(true)}>Points Chart</div>
+            </div>
+          </div>
+        </div>
       </>
   );
 }
