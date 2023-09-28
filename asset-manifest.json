@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/Word-Array-Game/static/css/main.f42a4e36.css",
-    "main.js": "/Word-Array-Game/static/js/main.f5d2e7c6.js",
+    "main.css": "/Word-Array-Game/static/css/main.eb0bbb87.css",
+    "main.js": "/Word-Array-Game/static/js/main.acd23eaa.js",
     "static/js/787.af401105.chunk.js": "/Word-Array-Game/static/js/787.af401105.chunk.js",
     "static/media/gearicon80px.png": "/Word-Array-Game/static/media/gearicon80px.194f47f80276f08170c6.png",
     "static/media/logo.svg": "/Word-Array-Game/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Word-Array-Game/index.html",
-    "main.f42a4e36.css.map": "/Word-Array-Game/static/css/main.f42a4e36.css.map",
-    "main.f5d2e7c6.js.map": "/Word-Array-Game/static/js/main.f5d2e7c6.js.map",
+    "main.eb0bbb87.css.map": "/Word-Array-Game/static/css/main.eb0bbb87.css.map",
+    "main.acd23eaa.js.map": "/Word-Array-Game/static/js/main.acd23eaa.js.map",
     "787.af401105.chunk.js.map": "/Word-Array-Game/static/js/787.af401105.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f42a4e36.css",
-    "static/js/main.f5d2e7c6.js"
+    "static/css/main.eb0bbb87.css",
+    "static/js/main.acd23eaa.js"
   ]
 }
