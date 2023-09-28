@@ -242,3 +242,7 @@ code {
 .chartWindow{
 
 }
+.chartContainer{
+    text-align: center;
+    display: inline-block;
+}
