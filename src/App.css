@@ -271,3 +271,24 @@ code {
   border-radius: 4px;
   border: 1px solid black;
 }
+.settingsArea{
+  padding: 10px;
+  box-sizing: border-box;
+  padding-top: 20px;
+}
+.settingsRow{
+  padding: 10px;
+  box-sizing: border-box;
+  /* border-bottom: solid 1px black; */
+  display: inline-block;
+  width: 40%;
+}
+input{
+  outline: none;  
+  margin: 0 10px;
+  padding: 5px;
+}
+.settingsRow input{
+  width: 40px;
+  text-align: center;
+}

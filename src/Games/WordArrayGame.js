@@ -4,6 +4,7 @@ import Charts from '../Components/Charts'
 import wordFile from "../Files/1000.txt"
 import HintWindow from '../Components/HintWindow'
 import { ZAxis } from 'recharts'
+import SettingsWindow from '../Components/SettingsWindow'
 
 function WordArrayGame() {
     
@@ -45,6 +46,7 @@ function WordArrayGame() {
 
   // Show or hide windows
   const [showChart, setShowChart] = useState()
+  const [showSettings, setShowSettings] = useState()
   const [rsw, setRsw] = useState(false)
 
   var infoString = 
@@ -1852,15 +1854,22 @@ function WordArrayGame() {
             </div>            
           </div>
         </div> */}
-        {showHint && <HintWindow wordArrays={array} close={()=>setShowHint(false)} hintCount={hintCount}></HintWindow>}
-        
+        {showHint && <HintWindow wordArrays={array} close={()=>setShowHint(false)} hintCount={hintCount}></HintWindow>}        
         {showChart && <Charts name={"Word Array Points"} dataArray={datePointArray} logObject={logObject} close={()=>setShowChart(false)}></Charts>}
+        {showSettings && 
+        <SettingsWindow 
+          close={()=>setShowSettings(false)}
+          arrayLength={arrayLength}
+          setArrayLength={setArrayLength}
+          arrayDepth={arrayDepth}
+          setArrayDepth={setArrayDepth}
+        ></SettingsWindow>}
         <div className='circleButtonHolder'>
           <div className='infoButton'>
             <img src={gear}></img>
             <div className='infoButtonDisplay'>
               <div className='settingsButton' onClick={()=>setShowChart(true)}>Points Chart</div>
-              <div className='settingsButton'>Settings</div>
+              <div className='settingsButton' onClick={()=>setShowSettings(true)}>Settings</div>
               <div className='settingsButton'>Description</div>
               <div className='settingsButton' title={hintCount+" hints remaining"} onClick={showHintFunction}>Hint ({hintCount})</div>
             </div>
