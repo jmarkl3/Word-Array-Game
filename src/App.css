@@ -228,7 +228,7 @@ code {
 }
 .window{
   position: fixed;
-  background-color: gray;
+  background-image: linear-gradient(rgba(151, 149, 149, 0.9), rgb(63, 63, 63));
   border: 1px solid black;
   border-radius: 5px;
   box-shadow: 0 5px 10px black;
@@ -238,8 +238,8 @@ code {
   left: 10vw;
   z-index: 10;
 }
-.chartWindow{
-
+.chartWindow{  
+  overflow-y: auto;
 }
 .chartContainer{
     text-align: center;

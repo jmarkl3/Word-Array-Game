@@ -3,6 +3,7 @@ import gear from '../images/gearicon80px.png'
 import Charts from '../Components/Charts'
 import wordFile from "../Files/1000.txt"
 import HintWindow from '../Components/HintWindow'
+import { ZAxis } from 'recharts'
 
 function WordArrayGame() {
     
@@ -64,8 +65,12 @@ function WordArrayGame() {
     loadPoints()
   }, [])  
 
+  // Used to keep track of the session name based on when the session was started YYYY-MM-DDTHH:MM:SS
   const startTimeRef = useRef()
+  // When points are saved this is used as a reference to calculate play time for the session (miliseconds since Jan 1 1970)
+  const startMSRef = useRef()
   function setInitialTime(){
+
     
     let date = new Date()
     startTimeRef.current = date.getFullYear() + "-" + 
@@ -73,12 +78,14 @@ function WordArrayGame() {
       "-" + date.getDate().toString().padStart(2, "0") + 
       "T" + date.getHours().toString().padStart(2, "0") + ":" + 
       date.getMinutes().toString().padStart(2, "0") + ":" + 
-      date.getSeconds().toString().padStart(2, "0")
+      date.getSeconds().toString().padStart(2, "0")    
+
+      startMSRef.current = date.getTime()       
 
     // To parse it:
     //let newDate = new Date(startTimeRef.current)
 
-  }
+  }  
   // Creates an array of objects with date and points to be given to a recharts chart
   const datePointArrayRef = useRef()
   const [datePointArray, setDatePointArray] = useState()
@@ -1385,40 +1392,64 @@ function WordArrayGame() {
   }
   function addPoints(words, depth, correctWords){
     let newPoints = (words * (depth + 1)) - (2 * (words - correctWords))
-    setPoints(points + newPoints)
+    let currentPoints = points + newPoints
+    // Calculate the number of seconds the user has been playing
+    let date = new Date()
+    let seconds = (date.getTime() - startMSRef.current) / 1000
+    console.log(seconds)
 
-    // Save the number of points in the db
+    // Save the number of points in the db 
+    
+    // Get (or create) the log object for this session
+    let updatedObject = loadedLogRef.current[startTimeRef.current]
+    // If it doesn't yet exist create an empty object
+    if(!updatedObject)
+      updatedObject = {}
+    
+    // Update the values
+    updatedObject.points = currentPoints
+    updatedObject.seconds = seconds
+
+    console.log("saving updated object")
+    console.log(updatedObject)
+    
+    
+    loadedLogRef.current[startTimeRef.current] = updatedObject
+    
+    console.log("updated loadedLogRef.current: ")
+    console.log(loadedLogRef.current)
+
+    // Set state for display and next save
+    setPoints(currentPoints)
 
     // Add the new points to the object that represents all of the users points
-    loadedPointsRef.current[startTimeRef.current] = points + newPoints
-    // console.log("saving points object")
-    // console.log(loadedPointsRef.current)
+    //loadedLogRef.current[startTimeRef.current] = points + newPoints        
+
+    // let date = new Date()
+    // loadedLogRef.current[startTimeRef.current] = {
+    //   points: points + newPoints,
+    //   seconds: (date.getTime() - startMSRef.current) / 1000 
+    // }
     
     // For the chart
-    createPointsArray(loadedPointsRef.current)
+    //createPointsArray(loadedLogRef.current)
 
     // Put the updated object in local storeage as a string
-    window.localStorage.setItem("Word-Array-Points", JSON.stringify(loadedPointsRef.current))
+    window.localStorage.setItem("Word-Array-Points", JSON.stringify(loadedLogRef.current))
 
   }
-  const loadedPointsRef = useRef({})
+  const loadedLogRef = useRef({})
+  const [logObject, setLogObject] = useState({})
   function loadPoints(){
 
     let loadedPoints = window.localStorage.getItem("Word-Array-Points")
-    // console.log("loadedPoints string:")
-    // console.log(loadedPoints)
-    // console.log(typeof loadedPoints)
 
     if(typeof loadedPoints === "string"){
       loadedPoints = JSON.parse(loadedPoints)
-      // console.log("loaded points parsed: ")
-      // console.log(loadedPoints)
-      loadedPointsRef.current = loadedPoints
-      // For the chart
-      createPointsArray(loadedPointsRef.current)
+      loadedLogRef.current = loadedPoints
+      setLogObject(loadedPoints)
     }
-    else
-      console.log("no loaded points")
+    
   }
   function oneDeeper(){
 
@@ -1823,7 +1854,7 @@ function WordArrayGame() {
         </div> */}
         {showHint && <HintWindow wordArrays={array} close={()=>setShowHint(false)} hintCount={hintCount}></HintWindow>}
         
-        {showChart && <Charts name={"Word Array Points"} dataArray={datePointArray} close={()=>setShowChart(false)}></Charts>}
+        {showChart && <Charts name={"Word Array Points"} dataArray={datePointArray} logObject={logObject} close={()=>setShowChart(false)}></Charts>}
         <div className='circleButtonHolder'>
           <div className='infoButton'>
             <img src={gear}></img>
