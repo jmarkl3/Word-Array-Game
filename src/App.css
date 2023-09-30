@@ -164,7 +164,6 @@ code {
   position: absolute;   
   bottom: 10px;
   left: 0px;    
-  padding: 4px;
   overflow-y: auto;
   direction: rtl;
   transition: 500ms;
@@ -245,4 +244,30 @@ code {
 .chartContainer{
     text-align: center;
     display: inline-block;
+}
+.currentDisplay{
+  color: white;
+}
+.settingsButton{
+  height: 30px;
+  line-height: 20px;
+  padding: 5px;
+  box-sizing: border-box;
+  transition: 500ms;
+}
+.settingsButton:hover{
+  background-color: rgba(255, 255, 255, 0.274);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.473);;
+}
+.hintMenuInner{
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.hintMenuLine{
+  margin: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid black;
 }
