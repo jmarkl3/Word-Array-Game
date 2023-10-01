@@ -38,7 +38,7 @@ return (
         <div className='closeButton' onClick={close}>x</div>   
         <div className='hintMenuInner'>
             <div className='hintMenuLine'>{"There are "+hintCount+" hints remaining."}</div>
-            {hintCount >= 0 && stringArray.map(wordsString => (
+            {hintCount > 0 && stringArray.map(wordsString => (
                 <div className='hintMenuLine'>{wordsString}</div>
             ))}
         </div>                          

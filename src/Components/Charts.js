@@ -87,7 +87,7 @@ function Charts({name, close, logObject}) {
           </LineChart>
         </div>
         <div className='chartContainer'>
-          <h3>{"Points Per Second Over Time"}</h3>
+          <h3>{"Points Per Second Per Day"}</h3>
           <LineChart
               width={800}
               height={400}

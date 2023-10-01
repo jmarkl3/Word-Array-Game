@@ -63,7 +63,6 @@ function WordArrayGame() {
   // Setup
   useEffect(()=>{
     createGlobalWordArray() 
-    setInitialTime()   
     loadPoints()
   }, [])  
 
@@ -1147,6 +1146,7 @@ function WordArrayGame() {
   function start(){
     setStarted(true)    
     startReading()
+    setInitialTime()   
     setStartSeconds(getSeconds())
   }
   function next(){
@@ -1398,7 +1398,6 @@ function WordArrayGame() {
     // Calculate the number of seconds the user has been playing
     let date = new Date()
     let seconds = (date.getTime() - startMSRef.current) / 1000
-    console.log(seconds)
 
     // Save the number of points in the db 
     
@@ -1411,34 +1410,27 @@ function WordArrayGame() {
     // Update the values
     updatedObject.points = currentPoints
     updatedObject.seconds = seconds
-
-    console.log("saving updated object")
-    console.log(updatedObject)
-    
     
     loadedLogRef.current[startTimeRef.current] = updatedObject
-    
-    console.log("updated loadedLogRef.current: ")
-    console.log(loadedLogRef.current)
-
+  
     // Set state for display and next save
     setPoints(currentPoints)
-
-    // Add the new points to the object that represents all of the users points
-    //loadedLogRef.current[startTimeRef.current] = points + newPoints        
-
-    // let date = new Date()
-    // loadedLogRef.current[startTimeRef.current] = {
-    //   points: points + newPoints,
-    //   seconds: (date.getTime() - startMSRef.current) / 1000 
-    // }
-    
-    // For the chart
-    //createPointsArray(loadedLogRef.current)
 
     // Put the updated object in local storeage as a string
     window.localStorage.setItem("Word-Array-Points", JSON.stringify(loadedLogRef.current))
 
+  }
+  function convertLogObject(logObject){
+    let convertedLogObject = {}
+    Object.entries(logObject).forEach(object => {
+      let key = object[0]
+      let values = object[1]
+      convertedLogObject[key] = values
+      if(convertedLogObject[key]?.seconds === convertedLogObject[key]?.points)
+        convertedLogObject[key].seconds = (convertedLogObject[key]?.points * 10)
+
+    })
+    return convertedLogObject
   }
   const loadedLogRef = useRef({})
   const [logObject, setLogObject] = useState({})
