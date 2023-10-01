@@ -8,6 +8,7 @@ import SettingsWindow from '../Components/SettingsWindow'
 import podcast from "../Files/podcast.txt"
 import tapSound from "../Files/TapSound.mp3"
 import bellSound from "../Files/BellSounds.mp3"
+import keyboardSound from "../Files/KeyboardClickSound.mp3"
 
 function WordArrayGame() {
     
@@ -161,6 +162,8 @@ function WordArrayGame() {
       .then(res => res.text())
       .then(text => {
         words = text
+        // A few extra words
+        words += "happy climb achieve bright pregnant sunny sun shining green travel water blue golden gold make create audit clean close love together hold build"
         globalWordArray.current = wordStringToWordArray(words)
       })
     }
@@ -430,6 +433,8 @@ function WordArrayGame() {
 
     // Show the input field and hide the word display
     setKeyInput(true)
+
+    playSound(keyboardSound)
 
     // Clear the input field and set focus on it so user can type
     document.getElementById("inputField").value = ""
