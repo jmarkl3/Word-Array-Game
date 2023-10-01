@@ -1,18 +1,17 @@
 import React, { useRef } from 'react'
 
-function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth}) {
-  
-    console.log("close")
-    console.log(close)
+function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak}) {
 
     const arrayLengthInput = useRef()
     const arrayDepthInput = useRef()
+    const speakInput = useRef()
     function updateSettings(){    
         setArrayLength(arrayLengthInput.current.value)
         setArrayDepth(arrayDepthInput.current.value)
-
     }
-
+    function checkboxFunction(){
+        console.log(speakInput.current.checked)
+    }
     return (
         <div className='window'>
             <div className='closeButton' onClick={close}>x</div>
@@ -44,8 +43,21 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                     Source 
                     <select>
                         <option>Movie Script 1</option>                        
-                        <option>Word Array 1</option>                        
+                        <option>Word List 1</option>                        
+                        <option>Random Wikipedia</option>                        
+                        <option>From Notes App</option>                        
+                        <option>Book</option>                        
                     </select>
+                </div>
+                <div className='settingsRow' title='If the words will be spoken'>
+                    Speak Words
+                    {/* https://www.w3schools.com/howto/howto_css_switch.asp */}
+                    <input 
+                        type='checkbox' 
+                        defaultChecked={speak} 
+                        ref={speakInput} 
+                        onClick={()=>setSpeak(speakInput.current.checked)}
+                    ></input>
                 </div>
             </div>
         </div>
