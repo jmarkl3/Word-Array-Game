@@ -1,0 +1,49 @@
+[https://app.podscribe.ai/series/2162]
+[https://app.podscribe.ai/episode/55469888 #1558 - Tristan Harris: the social dilemma]
+My guest today is returning to the podcast, Nicholas Christakis from Yale.
+[00:06:21]
+He is a brilliant man and he has written a book on covid, a book on all the various problems that we're encountering, the vaccines and all the different things. And he gave a very enlightened depiction of what's going on and description of what's happening and what we are I want to say, look forward to.
+[00:06:43]
+But what we're going to encounter and and what can be done to really to to mitigate all these issues. I really enjoyed talking to him and I hope you enjoyed as well.
+[00:06:54]
+Please welcome Nicholas Christakis government podcast, The Joe Rogan Experience Train, My Day Job podcast, my life all day.
+[00:07:05]
+Yeah, I got into cigars lately, I did so October and during the month of October, no drinking at all, and I started smoking cigars. Kind of the sober October work for you is great, but do it every year. It's a nice little reset. It's interesting, you know, I mean, I have another friend of mine who stopped drinking altogether and he said that it was making him cranky when he was drinking and of course, there were extra calories.
+[00:07:32]
+And I listened patiently to him and thought I would love to do that. But at the same time, it's hard to give up completely.
+[00:07:38]
+So I enjoy a glass of wine with a meal that that I miss the most. That was the worst when I was, you know, having a steak. And I just kind of like a nice glass of red wine right now. Yeah, but other than that, I don't drink much. I'm not much, much of a boozer. Although when November kicks in, I know I can drink again.
+[00:07:57]
+There's usually a few days of excess which is speaking of the subject of covid-19 the current pandemic we're into. That's not a good thing. There's a lot of people out there destroying their immune systems. Drinking is a very funny video that I found online of this gentleman who runs around his neighborhood. And he noticed that during the lockdown he would run around his neighborhood and he would see the recyclable bins and they were just filled with empty alcohol containers.
+[00:08:26]
+He's like, this is crazy.
+[00:08:27]
+This this is for the week. Like, how much of these people drinking just vodka and wine? And there's a lot of that going on.
+[00:08:35]
+Yeah, people have actually looked a little bit at that at alcohol consumption. And it's a little bit like the toilet paper shortage. I don't know if you followed the whole toilet paper shortage thing. Well, what's happening is there's a shift in consumption. You know, a lot of the drinking that was taking place in restaurants and, you know, at at bars is now taking place at home. So I think it's like half and half like half the consumption in the past was at home and half was out of the home.
+[00:09:01]
+And now it's almost all at home, which is part of it. But I also think, as you're suggesting, the actual amount is going up, too. So so, yes, it's you know, it's contributing to weight gain and other problems in our society.
+[00:09:14]
+The toilet paper thing. There's an easy fix for this, folks. That's way better. And I hate to do this to plug a sponsor, but it's a good sponsor and sponsor called Toshie. And Toshie makes a bidet attachment that just fits onto a regular toilet and it cleans your butt. There are only seventy nine bucks and it's fantastic. It cleans your butt so much better than just toilet paper and it cuts your toilet paper consumption down by like eighty five, 90 percent because you just need a little bit of toilet paper to pat your butt dry at the end.
+[00:09:45]
+Do you ever use one of those bidet attachments.
+[00:09:47]
+Well, by Greece they're not uncommon everyday. So I of course am familiar with them. But we don't have one here but me.
+[00:09:56]
+You should get it again. You should get one. I'm telling you so much better.
+[00:10:00]
+We may. We may.
+[00:10:02]
+In fact, you know, I can't believe we've covered alcohol in bidets.
+[00:10:07]
+Yeah. So let's talk about this. How did you what made you decide to write a book on the current pandemic and the disease? Well, I mean, for me, it started I was reading news reports in January about what was happening in China, but I wasn't paying a ton of attention. And then I have these Chinese colleagues with whom I've been doing research for a long time, and they contacted me in the middle of January. We had been using phone data in China to study how earthquakes, for example, change human social interaction.
+[00:10:40]
+So after an earthquake, Putu, people call and we could imagine that the first person you call is very important to you, for instance. And so we could use the phone data to study social interactions. And so we decided to use the phone data to study the pandemic and and to study the movement of people through China and how they might carry the virus with them, which started in Wuhan in November some time. And and and then we noticed or I saw in the data that on January twenty fourth, the Chinese were so concerned with a virus that they basically detonated a social nuclear weapon and they put nine hundred and thirty million people, almost a billion people under home confinement starting January twenty fourth.
+[00:11:28]
+And I could see that in the data. And that really got my because your emotions ceased, people stopped moving in the whole country. And that that really got my attention. And as I got worried and it was clear to me that this was going to be a serious global pandemic. And so I began to redirect the activities of my laboratory at Yale to study more and more about about what was happening with this virus. And we did a whole bunch of projects, some of which, if you're interested, we can talk about.
+[00:11:58]
+We released this app called Hu Nahlah HQ and a L-A who Nahlah, which you can get thousands of people use it now. It's like it's like ways for coronavirus. It's it's not a contact tracing app that looks backwards. It crowdsource is information about who you're connected to. One of the things I study is networks and where you live and forecast your risk. So people down the road from you are reporting a traffic jam or a cop and you can exit the highway and avoid that.
+[00:12:27]
+And people, your friends, friends, friends are reporting a fever. It can ripple back through the network and feed this information to all anonymous. It's it's anonymized. It doesn't, you know, doesn't report who is having what anyway. And the app, incidentally, temporarily.
+[00:12:45]
+Accesses your contacts, we don't copy the contacts, it doesn't copy that, but it makes it easier for you to identify who your social connections are anyway. So we did that. We did a whole bunch of other stuff, which maybe we'll talk about. And so in the month of February, as we were doing all this work, I was getting more and more worried. And and that our nation wasn't preparing. And so in March, I started sending out some Twitter threads like Epidemiology 101, like basic stuff, and a lot of those started to go viral and people were so hungry for information about it, it became clear to me, you know, factual information about what was happening.
