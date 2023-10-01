@@ -5,7 +5,7 @@ import wordFile from "../Files/1000.txt"
 import HintWindow from '../Components/HintWindow'
 import { ZAxis } from 'recharts'
 import SettingsWindow from '../Components/SettingsWindow'
-import podcast from "../Files/1000.txt"
+import podcast from "../Files/podcast.txt"
 import tapSound from "../Files/TapSound.mp3"
 import bellSound from "../Files/BellSounds.mp3"
 
@@ -15,6 +15,7 @@ function WordArrayGame() {
   const [array, setArray] = useState([])  
   // The array with the words to choose from  
   const globalWordArray = useRef(["word"])
+  const globalSentenceArray = useRef(["This is a sentence."])
 
   // Hint window
   const [hintCount, setHintCount ]= useState(3)
@@ -29,7 +30,7 @@ function WordArrayGame() {
   const [arrayDepth, setArrayDepth] = useState(4)
   const [speak, setSpeak] = useState(true)
   const [confirmationNoise, setConfirmationNoise] = useState(true)
-  const [wordSource, setWordSource] = useState()
+  const [wordSource, setWordSource] = useState("words")
 
   // Keep track of number in a row for changing difficulty
   const [correctStreak, setCorrectStreak] = useState(0)
@@ -73,6 +74,8 @@ function WordArrayGame() {
 
   useEffect(()=>{
     createGlobalWordArray() 
+    console.log("wordSource:")
+    console.log(wordSource)
   }, [wordSource])
 
   // Used to keep track of the session name based on when the session was started YYYY-MM-DDTHH:MM:SS
@@ -128,8 +131,17 @@ function WordArrayGame() {
     setDatePointArray(datePointArrayTemp)
     
   }
+  const sentenceIndex = useRef(0)
   function createArray(){
         
+    if(wordSource === "podcast"){
+
+      var newWordsArray = globalSentenceArray.current[sentenceIndex.current].split(" ")
+      addAtHead(newWordsArray)
+      sentenceIndex.current++
+      return
+    }
+
     // Create a new array and put 10 random words in it
     var newWordsArray = []
     for(var i=0; i<arrayLength; i++)
@@ -155,9 +167,8 @@ function WordArrayGame() {
     else if(wordSource === "podcast"){
       await fetch(podcast)
       .then(res => res.text())
-      .then(text => {
-        words = text
-        globalWordArray.current = wordStringToWordArray(words)
+      .then(text => {        
+        globalSentenceArray.current = stringToSentenceArray(text)
       })
     }
     else if (wordSource === "letters"){
@@ -247,6 +258,32 @@ function WordArrayGame() {
     // Filter out empty string arrays
     allWords = allWords.filter(word => word.replaceAll(" ", "") !== "")
     return allWords
+  }
+  function stringToSentenceArray(string){
+    // remove unwanted substrings from the raw string
+    let string2 = string.replaceAll(",", "")    
+    string2 = string2.replaceAll("\r", "")
+    
+    // Split the string into lines
+    let lines = string2.split("\n")
+    // Filter out the time stamp lines
+    lines = lines.filter(line => line[0] !== "[")
+    
+    // Split each line into sentences and push them to the sentences array
+    let sentences = []
+    lines.forEach(line => {
+      line.split(".").forEach(sentence => {
+        sentences.push(sentence)
+      })
+    })
+
+    // Remove empty sentences
+    sentences =  sentences.filter(line => line.replaceAll(" ", "") !== "")
+
+    console.log("sentences")
+    console.log(sentences)
+    return sentences
+
   }
   setUpKeyPress()
   function setUpKeyPress(){
@@ -474,23 +511,18 @@ function WordArrayGame() {
   const audioRef = useRef
   function playSound(sound){
     if(!sound) return
-    // if(audioRef.current)
-    //   audioRef.current.stop()
-    // if(!audioRef.current)
-    //   audioRef.current = new Audio()
-
-    console.log("playing sound")
-    console.log(sound)
 
     if(!audioRef.current){
-      audioRef.current = new Audio(sound)
-      // audioRef.current.onload(e => {
-      //   audioRef.current.play()
-      // })
+      try{
+        audioRef.current = new Audio(sound)
+      }catch{}
     }
     else
       audioRef.current.setAttribute("src", sound)
-    audioRef.current.play()        
+
+    try{
+      audioRef.current.play()            
+    }catch{}
     
   }
   function checkInputInprocess(input, array){
@@ -1039,6 +1071,8 @@ function WordArrayGame() {
           setSpeak={setSpeak}
           confirmationNoise={confirmationNoise}
           setConfirmationNoise={setConfirmationNoise}
+          wordSource={wordSource}
+          setWordSource={setWordSource}
         ></SettingsWindow>}
         <div className='circleButtonHolder'>
           <div className='infoButton'>

@@ -1,10 +1,11 @@
 import React, { useRef } from 'react'
 
-function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak}) {
+function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, wordSource, setWordSource}) {
 
     const arrayLengthInput = useRef()
     const arrayDepthInput = useRef()
     const speakInput = useRef()
+    const wordSourceSelect = useRef()
     function updateSettings(){    
         setArrayLength(arrayLengthInput.current.value)
         setArrayDepth(arrayDepthInput.current.value)
@@ -41,7 +42,9 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                 </div>
                 <div className='settingsRow' title='The source of array content'>
                     Source 
-                    <select>
+                    <select ref={wordSourceSelect} defaultValue={wordSource} onChange={()=>setWordSource(wordSourceSelect.current.value)}>
+                        <option value={"words"}>Words</option>                        
+                        <option value={"podcast"}>Podcast</option>                        
                         <option>Movie Script 1</option>                        
                         <option>Word List 1</option>                        
                         <option>Random Wikipedia</option>                        
