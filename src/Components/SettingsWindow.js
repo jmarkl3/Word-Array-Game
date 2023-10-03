@@ -32,24 +32,27 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                         <option>Word Arrays</option>                        
                     </select>
                 </div>
-                <div className='settingsRow' title='The content that will be loaded into the arrays'>
+                {/* <div className='settingsRow' title='The content that will be loaded into the arrays'>
                     Array Type 
                     <select>
                         <option title="The array will consist of random words">Word Arrays</option>
                         <option title="The array will consist of only numbers">Number Arrays</option>
                         <option title="The array will consist of the words in sentence selected in order from a script">Sentences</option>
                     </select>
-                </div>
+                </div> */}
                 <div className='settingsRow' title='The source of array content'>
                     Source 
                     <select ref={wordSourceSelect} defaultValue={wordSource} onChange={()=>setWordSource(wordSourceSelect.current.value)}>
                         <option value={"words"}>Words</option>                        
                         <option value={"podcast"}>Podcast</option>                        
-                        <option>Movie Script 1</option>                        
-                        <option>Word List 1</option>                        
-                        <option>Random Wikipedia</option>                        
+                        <option value={"numberWords"} title="Words that represent numbers like fun (for 1) shoe (for 2) and tree (for 3)">Number Words</option>                        
+                        <option value={"numbers"} title="Digits like 1 2 3">Numbers</option>                        
+                        {/* https://stackoverflow.com/questions/33614492/wikipedia-api-get-random-pages                */}
+                        {/* <option>Random Wikipedia</option>                         */}
+                        {/* <option>Movie Script 1</option>                        
+                        <option>Word List 1</option>          
                         <option>From Notes App</option>                        
-                        <option>Book</option>                        
+                        <option>Book</option>                         */}
                     </select>
                 </div>
                 <div className='settingsRow' title='If the words will be spoken'>

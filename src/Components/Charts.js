@@ -29,12 +29,31 @@ function Charts({name, close, logObject}) {
         Object.entries(logValues).forEach(pair => {
           let key = pair[0]
           let value = pair[1]
-          // If there is a value for that key add the new amount into it
-          if(dailyValuesObject[date][key])
-            dailyValuesObject[date][key] += value          
-          // Else set the initial value
-          else
-            dailyValuesObject[date][key] = value          
+
+          // For the array length save the largest value
+          if(key === "arrayLength"){
+            // If there is a value for arrayLength
+            if(dailyValuesObject[date]?.arrayLength){
+              // And it is larger than the stored value
+              if(value > dailyValuesObject[date]?.arrayLength )
+                // Save it
+                dailyValuesObject[date].arrayLength = value
+            }
+            // If there is no stored value save it
+            else{
+              dailyValuesObject[date].arrayLength = value
+            }
+          }
+          // For the other two (points and seconds) add the values to the existing stored values
+          else{
+            // If there is a value for that key add the new amount into it
+            if(dailyValuesObject[date][key])
+              dailyValuesObject[date][key] += value          
+            // Else set the initial value
+            else
+              dailyValuesObject[date][key] = value        
+          }
+
         })
         
         // Calculate the points per second
@@ -99,6 +118,22 @@ function Charts({name, close, logObject}) {
               <Tooltip />
               <CartesianGrid stroke="#f5f5f5" />
               <Line type="monotone" dataKey="pointsPerSecond" stroke="#ff7300" yAxisId={0} />
+              {/* <Line type="monotone" dataKey="pv" stroke="#387908" yAxisId={1} /> */}
+          </LineChart>
+        </div>
+        <div className='chartContainer'>
+          <h3>{"Max Array Length"}</h3>
+          <LineChart
+              width={800}
+              height={400}
+              data={dailyValues}
+              margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+              >
+              <XAxis dataKey="date" />
+              <YAxis></YAxis>
+              <Tooltip />
+              <CartesianGrid stroke="#f5f5f5" />
+              <Line type="monotone" dataKey="arrayLength" stroke="#ff7300" yAxisId={0} />
               {/* <Line type="monotone" dataKey="pv" stroke="#387908" yAxisId={1} /> */}
           </LineChart>
         </div>
