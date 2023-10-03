@@ -47,6 +47,8 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                         <option value={"podcast"}>Podcast</option>                        
                         <option value={"numberWords"} title="Words that represent numbers like fun (for 1) shoe (for 2) and tree (for 3)">Number Words</option>                        
                         <option value={"numbers"} title="Digits like 1 2 3">Numbers</option>                        
+                        <option value={"namesDR"} title="Names from the thing">Names DR</option>                        
+                        <option value={"namesR"} title="RandomNames">Names R</option>                        
                         {/* https://stackoverflow.com/questions/33614492/wikipedia-api-get-random-pages                */}
                         {/* <option>Random Wikipedia</option>                         */}
                         {/* <option>Movie Script 1</option>                        

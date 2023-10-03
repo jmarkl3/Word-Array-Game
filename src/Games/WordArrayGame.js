@@ -9,6 +9,7 @@ import podcast from "../Files/podcast.txt"
 import tapSound from "../Files/TapSound.mp3"
 import bellSound from "../Files/BellSounds.mp3"
 import keyboardSound from "../Files/KeyboardClickSound.mp3"
+import { type } from '@testing-library/user-event/dist/type'
 
 function WordArrayGame() {
     
@@ -154,11 +155,6 @@ function WordArrayGame() {
 
       // This is the list of words that the array will select from
       //var words = `time year people way day man thing woman life child world school family student hand part place palace week company system program question work number night point home water room mother area money story fact month lot right study book eye job word business side kind head house service friend father hour game line member car city community Name team minute idea kid body information parent others level office door health person art history party result change morning reason research girl guy moment air teacher education car value gold baby food plant blue sun moon cloud trees plants electricity computer keyboard mouse book page word symbol hair ability time house water council market city land sea lake ocean sand rocks animals crab goat deer alligator bull team town nature bank paper pen marker club king voice light music field forest mountain valley peak project base love letter capital model machine fire son space plan energy hotel parkingLot meet cup box summer village park garden science picture fish bird oil film addition station window door sound glass software earth fiver sale equipment radio peace teacher culture context weight sex transport cash library phone stone dog cat memory railroad train plane sky wood granite marble winter snow rain hill wind bank museum farm cabinet fridge coffee tea bridge connection air dinner lunch breakfast fruit cantaloupe watermelon potato bright clear happy reach up climb progress grow accept accomplish achieved active`    
-      
-      
-      
-      // console.log("allWords")
-      // console.log(allWords)
 
       // Put the array in a ref
     }
@@ -190,6 +186,9 @@ function WordArrayGame() {
             break    
           case 68:
             //debug()
+            break        
+          case 83:
+            spellWord()
             break        
         }
       }
@@ -288,8 +287,6 @@ function WordArrayGame() {
     // Remove empty sentences
     sentences =  sentences.filter(line => line.replaceAll(" ", "") !== "")
 
-    console.log("sentences")
-    console.log(sentences)
     return sentences
 
   }
@@ -374,6 +371,19 @@ function WordArrayGame() {
     
   }
 
+  function spellWord(){
+    let wordArray = array[arrayIndex]
+    if(!Array.isArray(wordArray)) return
+
+    let word = wordArray[wordIndex]
+    if(typeof word !== "string") return
+
+    let letters = word.split("")
+    letters.forEach(letter => {
+      speakWord(letter)
+    })
+  }
+
   // #endregion Helper Functions
 
   // ================================================================================
@@ -386,9 +396,10 @@ function WordArrayGame() {
     let totalWordsInArray = array[arrayIndex].length
     var inputWordsArray = input.split(' ')    
     var wordIndex = 0, correctCount = 0
-    inputWordsArray.forEach(word=>{
-      if(array[arrayIndex][wordIndex++] === word)
-        correctCount++             
+    inputWordsArray.forEach(word => {
+      if(typeof array[arrayIndex][wordIndex] === "string" && typeof word === "string")
+        if(array[arrayIndex][wordIndex++].toLowerCase() === word.toLowerCase())
+          correctCount++             
     })
     
     // Check to see if there is an additional correct word, if so play the noise
@@ -403,19 +414,6 @@ function WordArrayGame() {
 
     // When we get to the furthest depth set a flag variable that says were on our way back
     //  then start decrementing counter. If flag is set and we get back to top, create new array and reset flag
-
-    // if(!goingUp && inputWordsArray.length > array[arrayIndex].length) (if nedt depth is within bounds of array)         
-      // if in bounds
-        // go deeper
-      // else
-        // set flag and go one more shallow      
-    // else
-      // if depth != 0
-        // set flag so we know not to go into section above this
-        // go one level more shallow
-      // if depth is 0 create a new array and start reading mode
-      
-
     // If the number of words input is greater than the number of words in the array, input is complete
     if(inputWordsArray.length > totalWordsInArray){
 
@@ -481,14 +479,12 @@ function WordArrayGame() {
   function correctStreakAdjuster(correct){
     if(correct){
         if(correctStreak + 1 >= arrayLength){
-            console.log("incremented array length to "+(arrayLength + 1))
             setArrayLength(arrayLength + 1)
             setCorrectStreak(0)
         }else{
             setCorrectStreak(correctStreak + 1) 
         }
     }else{
-        console.log("incorrect line, resetting")
         setCorrectStreak(0)
     }
   }
@@ -511,9 +507,6 @@ function WordArrayGame() {
     // If the game is not started or user is typing return
     if(!started || keyInput)
       return
-
-    console.log("in next")   
-    console.log("speak: "+speak)   
 
     // If all words have shown start input mode
     if(wordIndex + 1 == array[arrayIndex].length)
@@ -548,8 +541,6 @@ function WordArrayGame() {
 
   function oneDeeper(){
 
-    console.log("going one deeper")
-
     // Add the current to the log          
     var tempAL = accuracyLog
     tempAL.push("input "+correct.correct+" of "+array[arrayIndex].length+" correctly at depth "+arrayIndex)                                      
@@ -563,8 +554,6 @@ function WordArrayGame() {
   }
 
   function oneUp(){
-
-    console.log("going one up")
 
     // Add the current to the log          
     var tempAL = accuracyLog
