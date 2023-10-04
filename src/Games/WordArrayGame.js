@@ -35,7 +35,6 @@ function WordArrayGame() {
   const [arrayDepth, setArrayDepth] = useState(4)
   const [speak, setSpeak] = useState(true)
   const [confirmationNoise, setConfirmationNoise] = useState(true)
-  const [wordSource, setWordSource] = useState("words")
 
   // Keep track of number in a row for changing difficulty
   const [correctStreak, setCorrectStreak] = useState(0)
@@ -61,6 +60,37 @@ function WordArrayGame() {
   const [showSettings, setShowSettings] = useState()
   const [rsw, setRsw] = useState(false)
 
+
+  // ================================================================================
+  // Word Lists
+
+  // To add a wordlist: 
+  // This File:     string, attribute on wordSourses state, createGlobalWordArray statement, 
+  // Settings Page: input checkbox, ref, onChange function
+  const [wordSources, setWordSources] = useState({
+    miscWords: true,
+    file1000: true,
+    wordsUp: true,
+    wordsDr: true,
+    namesDr: false,
+    names: false,
+    numbers: false,
+    digits: false,
+    letters: false,
+  })
+  
+  // Word Lists
+  let miscWords = "time year people way day man thing woman life child world school family student hand part place palace week company system program question work number night point home water room mother area money story fact month lot right study book eye job word business side kind head house service friend father hour game line member car city community Name team minute idea kid body information parent others level office door health person art history party result change morning reason research girl guy moment air teacher education car value gold baby food plant blue sun moon cloud trees plants electricity computer keyboard mouse book page word symbol hair ability time house water council market city land sea lake ocean sand rocks animals crab goat deer alligator bull team town nature bank paper pen marker club king voice light music field forest mountain valley peak project base love letter capital model machine fire son space plan energy hotel parkingLot meet cup box summer village park garden science picture fish bird oil film addition station window door sound glass software earth fiver sale equipment radio peace teacher culture context weight sex transport cash library phone stone dog cat memory railroad train plane sky wood granite marble winter snow rain hill wind bank museum farm cabinet fridge coffee tea bridge connection air dinner lunch breakfast fruit cantaloupe watermelon potato bright clear happy reach up climb progress grow accept accomplish achieved active"
+  // There is a file with 1000 commonn english words
+  let wordsUp = "happy climb achieve bright sunny sun shining green travel water gold make create audit clean build meet talk joke laugh plants sky mountains trees rocks open space organize complete system"
+  let wordsDr = "blue golden pink pale love pregnant together hold shirt pants dress skirt blanket bed pillow room partner help sit in into insert open egg positive surge disk round plastic fill belly wet drip liquid female woman girl muffin pie shower"
+  let namesDr = "Natalie Whittney Tonya Savannah Briana Ashleigh Robbin Bailey Lexi Jodi Kate Melissa Gretchen Summer Pamela Caitlin Summerlyn Venita Tiff Shannon Valeria Kiara Davlin Nichole LeeAndra Sydney Jennifer Erin Ashlyn Kayla Loren Stephanie Jess Elizabeth Kaylee"
+  let names = ""
+  let letters = "atom bear cockroach dog elephant fire goat hose igloo journal kangaroo lizard monkey neon octopus pussyCat queen riot snake tea up vacuum walrus female male zygote"
+  let numbers = "one two three four five six seven eight nine zero"
+  let digits = "1 2 3 4 5 6 7 8 9 0"  
+
+
   var infoString = 
   `
     Picture each word, then picture it performing an action on the next word creating a story. 
@@ -81,82 +111,53 @@ function WordArrayGame() {
 
     useEffect(()=>{
       createGlobalWordArray() 
-    }, [wordSource])
+    }, [wordSources])
 
     async function createGlobalWordArray(){
 
       var words = ""
-      if(wordSource === "words"){
-        await fetch(wordFile)
-        .then(res => res.text())
-        .then(text => {
-          words = text
-          // A few extra words
-          words += "happy climb achieve bright pregnant sunny sun shining green travel water blue golden gold make create audit clean close love together hold build"
-          globalWordArray.current = wordStringToWordArray(words)
-        })
-      }
-      else if(wordSource === "podcast"){
+
+      // This one is exclusive, all the others are cumulative
+      if(wordSources.podcast){
         await fetch(podcast)
         .then(res => res.text())
         .then(text => {        
           globalSentenceArray.current = stringToSentenceArray(text)
+          return          
         })
       }
-      else if (wordSource === "letters"){
-        words = 
-          `
-          atom
-          bear
-          cockroach
-          dog
-          elephant
-          fire
-          goat
-          hose
-          igloo
-          journal
-          kangaroo
-          lizard
-          monkey
-          neon
-          octopus
-          pussyCat
-          queen
-          riot
-          snake
-          tea
-          up
-          vacuum
-          walrus
-          egg
-          sperm
-          zygote
-          `    
-          globalWordArray.current = wordStringToWordArray(words)
-      }
-      else if (wordSource === "numberWords"){
-        words = `fun shoe tree door hive kicks snow ate vine hero`
-        globalWordArray.current = wordStringToWordArray(words)
-      }   
-      else if (wordSource === "numbers"){
-        words = "1 2 3 4 5 6 7 8 9 0"
-        globalWordArray.current = wordStringToWordArray(words)
-      }
-      // The default is the 1000 words list
-      else {
+
+
+
+      if(wordSources.miscWords)
+        words += miscWords
+      if(wordSources.file1000)
         await fetch(wordFile)
         .then(res => res.text())
         .then(text => {
-          words = text
-          globalWordArray.current = wordStringToWordArray(words)
-        })
-      }
+          words += text+" "
+        })      
+      if(wordSources.wordsUp)
+          words += wordsUp      
+      if(wordSources.wordsDr)        
+          words += wordsDr      
+      if(wordSources.namesDr)        
+          words += namesDr
+      if(wordSources.names)        
+          words += names
+      if(wordSources.numbers)        
+          words += numbers
+      if(wordSources.digits)        
+          words += digits
+      if(wordSources.letters)        
+          words += letters
 
-      // This is the list of words that the array will select from
-      //var words = `time year people way day man thing woman life child world school family student hand part place palace week company system program question work number night point home water room mother area money story fact month lot right study book eye job word business side kind head house service friend father hour game line member car city community Name team minute idea kid body information parent others level office door health person art history party result change morning reason research girl guy moment air teacher education car value gold baby food plant blue sun moon cloud trees plants electricity computer keyboard mouse book page word symbol hair ability time house water council market city land sea lake ocean sand rocks animals crab goat deer alligator bull team town nature bank paper pen marker club king voice light music field forest mountain valley peak project base love letter capital model machine fire son space plan energy hotel parkingLot meet cup box summer village park garden science picture fish bird oil film addition station window door sound glass software earth fiver sale equipment radio peace teacher culture context weight sex transport cash library phone stone dog cat memory railroad train plane sky wood granite marble winter snow rain hill wind bank museum farm cabinet fridge coffee tea bridge connection air dinner lunch breakfast fruit cantaloupe watermelon potato bright clear happy reach up climb progress grow accept accomplish achieved active`    
+      // Convert the string to an array 
+      globalWordArray.current = wordStringToWordArray(words)
 
-      // Put the array in a ref
+      console.log(wordSources)
+      console.log(globalWordArray.current)
+
     }
 
     const loadedLogRef = useRef({})
@@ -224,7 +225,7 @@ function WordArrayGame() {
   const sentenceIndex = useRef(0)
   function createArray(){
         
-    if(wordSource === "podcast"){
+    if(wordSources.podcast){
 
       var newWordsArray = globalSentenceArray.current[sentenceIndex.current].split(" ")
       addAtHead(newWordsArray)
@@ -631,7 +632,7 @@ function WordArrayGame() {
     return convertedLogObject
   }
 
-  function debug(){
+  function debug(){ 
     console.log("________________________________________")
     console.log("array")
     console.log(array)
@@ -691,9 +692,9 @@ function WordArrayGame() {
           speak={speak}
           setSpeak={setSpeak}
           confirmationNoise={confirmationNoise}
-          setConfirmationNoise={setConfirmationNoise}
-          wordSource={wordSource}
-          setWordSource={setWordSource}
+          setConfirmationNoise={setConfirmationNoise}                    
+          wordSources={wordSources}
+          setWordSources={setWordSources}
         ></SettingsWindow>}
         <div className='circleButtonHolder'>
           <div className='infoButton'>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, wordSource, setWordSource}) {
+function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, wordSource, setWordSource, wordSources, setWordSources}) {
 
     const arrayLengthInput = useRef()
     const arrayDepthInput = useRef()
@@ -10,9 +10,31 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
         setArrayLength(arrayLengthInput.current.value)
         setArrayDepth(arrayDepthInput.current.value)
     }
-    function checkboxFunction(){
-        console.log(speakInput.current.checked)
+
+    const miscWords = useRef()
+    const file1000 = useRef()
+    const wordsUp = useRef()
+    const wordsDr = useRef()
+    const namesDr = useRef()
+    const names = useRef()
+    const numbers = useRef()
+    const digits = useRef()
+    const letters = useRef()      
+    function wordListSourceBoxes(){
+        let newWordSourses = {
+            miscWords: miscWords.current.checked,
+            file1000: file1000.current.checked,
+            wordsUp: wordsUp.current.checked,
+            wordsDr: wordsDr.current.checked,
+            namesDr: namesDr.current.checked,
+            names: names.current.checked,
+            numbers: numbers.current.checked,
+            digits: digits.current.checked,
+            letters: letters.current.checked,
+        }
+        setWordSources(newWordSourses)
     }
+
     return (
         <div className='window'>
             <div className='closeButton' onClick={close}>x</div>
@@ -40,23 +62,6 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                         <option title="The array will consist of the words in sentence selected in order from a script">Sentences</option>
                     </select>
                 </div> */}
-                <div className='settingsRow' title='The source of array content'>
-                    Source 
-                    <select ref={wordSourceSelect} defaultValue={wordSource} onChange={()=>setWordSource(wordSourceSelect.current.value)}>
-                        <option value={"words"}>Words</option>                        
-                        <option value={"podcast"}>Podcast</option>                        
-                        <option value={"numberWords"} title="Words that represent numbers like fun (for 1) shoe (for 2) and tree (for 3)">Number Words</option>                        
-                        <option value={"numbers"} title="Digits like 1 2 3">Numbers</option>                        
-                        <option value={"namesDR"} title="Names from the thing">Names DR</option>                        
-                        <option value={"namesR"} title="RandomNames">Names R</option>                        
-                        {/* https://stackoverflow.com/questions/33614492/wikipedia-api-get-random-pages                */}
-                        {/* <option>Random Wikipedia</option>                         */}
-                        {/* <option>Movie Script 1</option>                        
-                        <option>Word List 1</option>          
-                        <option>From Notes App</option>                        
-                        <option>Book</option>                         */}
-                    </select>
-                </div>
                 <div className='settingsRow' title='If the words will be spoken'>
                     Speak Words
                     {/* https://www.w3schools.com/howto/howto_css_switch.asp */}
@@ -67,6 +72,68 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                         onClick={()=>setSpeak(speakInput.current.checked)}
                     ></input>
                 </div>
+                <div className='sources'>
+                    <h2>
+                        Sources: 
+                    </h2>
+                    <div>
+                        Misc Words
+                        <input 
+                            type='checkbox' 
+                            ref={miscWords} 
+                            onChange={wordListSourceBoxes} 
+                            defaultChecked={wordSources?.miscWords}
+                        ></input>
+                    </div>
+                    <div>
+                        File
+                        <input 
+                            type='checkbox' 
+                            ref={file1000} 
+                            onChange={wordListSourceBoxes} 
+                            defaultChecked={wordSources?.file1000}
+                        ></input>
+                    </div>
+                    <div>
+                        Up Words
+                        <input 
+                            type='checkbox' 
+                            ref={wordsUp} 
+                            onChange={wordListSourceBoxes} 
+                            defaultChecked={wordSources?.wordsUp}
+                        ></input>
+                    </div>
+                    <div>
+                        Words Dr
+                        <input 
+                            type='checkbox' 
+                            ref={wordsDr} 
+                            onChange={wordListSourceBoxes} 
+                            defaultChecked={wordSources?.wordsDr}
+                        ></input>
+                    </div>
+                    <div>
+                        Names Dr
+                        <input type='checkbox' ref={namesDr} onChange={wordListSourceBoxes} defaultChecked={wordSources?.namesDr}></input>
+                    </div>
+                    <div>
+                        Random Names
+                        <input type='checkbox' ref={names} onChange={wordListSourceBoxes} defaultChecked={wordSources?.names}></input>
+                    </div>
+                    <div>
+                        Numbers
+                        <input type='checkbox' ref={numbers} onChange={wordListSourceBoxes} defaultChecked={wordSources?.numbers}></input>
+                    </div>
+                    <div>
+                        Digits
+                        <input type='checkbox' ref={digits} onChange={wordListSourceBoxes} defaultChecked={wordSources?.digits}></input>
+                    </div>
+                    <div>
+                        Letters
+                        <input type='checkbox' ref={letters} onChange={wordListSourceBoxes} defaultChecked={wordSources?.letters}></input>
+                    </div>
+                </div>
+                
             </div>
         </div>
     )
