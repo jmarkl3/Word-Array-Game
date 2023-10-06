@@ -10,6 +10,7 @@ import tapSound from "../Files/TapSound.mp3"
 import bellSound from "../Files/BellSounds.mp3"
 import keyboardSound from "../Files/KeyboardClickSound.mp3"
 import { type } from '@testing-library/user-event/dist/type'
+import DescriptionWindow from '../Components/DescriptionWindow'
 
 function WordArrayGame() {
     
@@ -58,6 +59,7 @@ function WordArrayGame() {
   // Show or hide windows
   const [showChart, setShowChart] = useState()
   const [showSettings, setShowSettings] = useState()
+  const [showDescription, setShowDescriptionWindow] = useState()
   const [rsw, setRsw] = useState(false)
 
 
@@ -80,15 +82,15 @@ function WordArrayGame() {
   })
   
   // Word Lists
-  let miscWords = "time year people way day man thing woman life child world school family student hand part place palace week company system program question work number night point home water room mother area money story fact month lot right study book eye job word business side kind head house service friend father hour game line member car city community Name team minute idea kid body information parent others level office door health person art history party result change morning reason research girl guy moment air teacher education car value gold baby food plant blue sun moon cloud trees plants electricity computer keyboard mouse book page word symbol hair ability time house water council market city land sea lake ocean sand rocks animals crab goat deer alligator bull team town nature bank paper pen marker club king voice light music field forest mountain valley peak project base love letter capital model machine fire son space plan energy hotel parkingLot meet cup box summer village park garden science picture fish bird oil film addition station window door sound glass software earth fiver sale equipment radio peace teacher culture context weight sex transport cash library phone stone dog cat memory railroad train plane sky wood granite marble winter snow rain hill wind bank museum farm cabinet fridge coffee tea bridge connection air dinner lunch breakfast fruit cantaloupe watermelon potato bright clear happy reach up climb progress grow accept accomplish achieved active"
+  let miscWords = "time year people way day man thing woman life child world school family student hand part place palace week company system program question work number night point home water room mother area money story fact month lot right study book eye job word business side kind head house service friend father hour game line member car city community Name team minute idea kid body information parent others level office door health person art history party result change morning reason research girl guy moment air teacher education car value gold baby food plant blue sun moon cloud trees plants electricity computer keyboard mouse book page word symbol hair ability time house water council market city land sea lake ocean sand rocks animals crab goat deer alligator bull team town nature bank paper pen marker club king voice light music field forest mountain valley peak project base love letter capital model machine fire son space plan energy hotel parkingLot meet cup box summer village park garden science picture fish bird oil film addition station window door sound glass software earth fiver sale equipment radio peace teacher culture context weight sex transport cash library phone stone dog cat memory railroad train plane sky wood granite marble winter snow rain hill wind bank museum farm cabinet fridge coffee tea bridge connection air dinner lunch breakfast fruit cantaloupe watermelon potato bright clear happy reach up climb progress grow accept accomplish achieved active "
   // There is a file with 1000 commonn english words
-  let wordsUp = "happy climb achieve bright sunny sun shining green travel water gold make create audit clean build meet talk joke laugh plants sky mountains trees rocks open space organize complete system"
-  let wordsDr = "blue golden pink pale love pregnant together hold shirt pants dress skirt blanket bed pillow room partner help sit in into insert open egg positive surge disk round plastic fill belly wet drip liquid female woman girl muffin pie shower"
-  let namesDr = "Natalie Whittney Tonya Savannah Briana Ashleigh Robbin Bailey Lexi Jodi Kate Melissa Gretchen Summer Pamela Caitlin Summerlyn Venita Tiff Shannon Valeria Kiara Davlin Nichole LeeAndra Sydney Jennifer Erin Ashlyn Kayla Loren Stephanie Jess Elizabeth Kaylee"
+  let wordsUp = "happy climb achieve bright sunny sun shining green travel water gold make create audit clean build meet talk joke laugh plants sky mountains trees rocks open space organize complete system "
+  let wordsDr = "blue golden pink pale love pregnant together hold shirt pants dress skirt blanket bed pillow room partner help sit in into insert open egg positive surge disk round plastic fill belly wet drip liquid female woman girl muffin pie shower "
+  let namesDr = "Natalie Whittney Tonya Savannah Briana Ashleigh Robbin Bailey Lexi Jodi Kate Melissa Gretchen Summer Pamela Caitlin Summerlyn Venita Tiff Shannon Valeria Kiara Davlin Nichole LeeAndra Sydney Jennifer Erin Ashlyn Kayla Loren Stephanie Jess Elizabeth Kaylee "
   let names = ""
-  let letters = "atom bear cockroach dog elephant fire goat hose igloo journal kangaroo lizard monkey neon octopus pussyCat queen riot snake tea up vacuum walrus female male zygote"
-  let numbers = "one two three four five six seven eight nine zero"
-  let digits = "1 2 3 4 5 6 7 8 9 0"  
+  let letters = "atom bear cockroach dog elephant fire goat hose igloo journal kangaroo lizard monkey neon octopus pussyCat queen riot snake tea up vacuum walrus female male zygote "
+  let numbers = "one two three four five six seven eight nine zero "
+  let digits = "1 2 3 4 5 6 7 8 9 0 "  
 
 
   var infoString = 
@@ -675,7 +677,7 @@ function WordArrayGame() {
             <div className='inlineBlock' title={"Streak: "+correctStreak+". When the streak == the array length, the array length increments."}>
                 {correctStreak}
             </div>
-            <div className='inlineBlock' title={"Points: "+correctStreak+" = sum of Array length * depth - (2 * incorrect)"}>
+            <div className='inlineBlock' title={"Points: "+points+" = sum of Array length * depth - (2 * incorrect)"}>
                 {points}
             </div>
 
@@ -683,26 +685,32 @@ function WordArrayGame() {
         {showHint && <HintWindow wordArrays={array} close={()=>setShowHint(false)} hintCount={hintCount}></HintWindow>}        
         {showChart && <Charts name={"Word Array Points"} logObject={logObject} close={()=>setShowChart(false)}></Charts>}
         {showSettings && 
-        <SettingsWindow 
-          close={()=>setShowSettings(false)}
-          arrayLength={arrayLength}
-          setArrayLength={setArrayLength}
-          arrayDepth={arrayDepth}
-          setArrayDepth={setArrayDepth}
-          speak={speak}
-          setSpeak={setSpeak}
-          confirmationNoise={confirmationNoise}
-          setConfirmationNoise={setConfirmationNoise}                    
-          wordSources={wordSources}
-          setWordSources={setWordSources}
-        ></SettingsWindow>}
+          <SettingsWindow 
+            close={()=>setShowSettings(false)}
+            arrayLength={arrayLength}
+            setArrayLength={setArrayLength}
+            arrayDepth={arrayDepth}
+            setArrayDepth={setArrayDepth}
+            speak={speak}
+            setSpeak={setSpeak}
+            confirmationNoise={confirmationNoise}
+            setConfirmationNoise={setConfirmationNoise}                    
+            wordSources={wordSources}
+            setWordSources={setWordSources}
+          ></SettingsWindow>
+        }
+        {showDescription && 
+          <DescriptionWindow
+            close={()=>setShowDescriptionWindow(false)}
+          ></DescriptionWindow>
+        }
         <div className='circleButtonHolder'>
           <div className='infoButton'>
             <img src={gear}></img>
             <div className='infoButtonDisplay'>
               <div className='settingsButton' onClick={()=>setShowChart(true)}>Charts</div>
               <div className='settingsButton' onClick={()=>setShowSettings(true)}>Settings</div>
-              <div className='settingsButton'>Description</div>
+              <div className='settingsButton' onClick={()=>setShowDescriptionWindow(true)}>Description</div>
               <div className='settingsButton' title={hintCount+" hints remaining"} onClick={showHintFunction}>Hint ({hintCount})</div>
             </div>
           </div>

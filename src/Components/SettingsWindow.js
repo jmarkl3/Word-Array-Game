@@ -7,8 +7,16 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
     const speakInput = useRef()
     const wordSourceSelect = useRef()
     function updateSettings(){    
-        setArrayLength(arrayLengthInput.current.value)
-        setArrayDepth(arrayDepthInput.current.value)
+        try{
+            let newArrayLength = Number.parseInt(arrayLengthInput.current.value)
+            let newArrayDepth = Number.parseInt(arrayDepthInput.current.value)
+
+            setArrayLength(newArrayLength)
+            setArrayDepth(newArrayDepth)
+        
+        }catch{
+            console.log("invalid settings inputs")
+        }
     }
 
     const miscWords = useRef()
