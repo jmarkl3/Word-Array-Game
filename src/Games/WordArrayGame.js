@@ -109,6 +109,7 @@ function WordArrayGame() {
   // #region Setup
     useEffect(()=>{    
       loadPoints()
+      loadArrays()
     }, [])  
 
     useEffect(()=>{
@@ -157,9 +158,6 @@ function WordArrayGame() {
       // Convert the string to an array 
       globalWordArray.current = wordStringToWordArray(words)
 
-      console.log(wordSources)
-      console.log(globalWordArray.current)
-
     }
 
     const loadedLogRef = useRef({})
@@ -171,9 +169,30 @@ function WordArrayGame() {
       if(typeof loadedPoints === "string"){
         loadedPoints = JSON.parse(loadedPoints)
         loadedLogRef.current = loadedPoints
+        loadPoints = cleanObject(loadedPoints)
         setLogObject(loadedPoints)
       }
       
+    }
+
+    // This function is used to correct incorrect log entries
+    function cleanObject(pointsObject){
+      return pointsObject
+      console.log("cleanObject pointsObject: ")
+      console.log(pointsObject)
+
+      let tempPointsObject = {}
+      Object.entries(pointsObject).forEach(([date, data]) => {
+        let tempObject = data
+        if(tempObject?.arrayLength == 61)
+          tempObject.arrayLength = 7
+        tempPointsObject[date] = tempObject
+      })
+
+      console.log("cleaned points object")
+      console.log(tempPointsObject)
+
+      return tempPointsObject
     }
 
     setUpKeyPress()
@@ -245,8 +264,32 @@ function WordArrayGame() {
 
     // Adds the new word array at the head of the 2d array that holds word arrays
     addAtHead(newWordsArray)
-  }  
+  } 
+  /**
+   * Save the array in local storage so it can be used as a starting point later
+   */ 
+  function saveArray(array){
+    // Get them from local storage on startup and put in a variable
+    let tempLoadedArrays = {...loadedArrays}
+    
+    // Add the array to the object and put it in local storage
+    tempLoadedArrays[startTimeRef.current] = array
 
+    console.log("saving arrays:")
+    console.log(tempLoadedArrays)
+
+    window.localStorage.setItem("savedArrays", JSON.stringify(tempLoadedArrays))
+
+  }
+  const [loadedArrays, setLoadedArrays] = useState({})
+  function loadArrays(){
+    let loadedArraysTemp = window.localStorage.getItem("savedArrays")
+    console.log("loaded arrays:")
+    console.log(JSON.parse(loadedArraysTemp))
+    if(loadedArraysTemp)
+      setLoadedArrays(JSON.parse(loadedArraysTemp))
+
+  }
 
   function wordStringToWordArray(string){
     // Remove new line characters
@@ -312,6 +355,9 @@ function WordArrayGame() {
       newArray[c++] = wordArray
     })
 
+    // Save the array in local storage for later retrevial
+    saveArray(newArray)
+
     // Put it in the state variable
     setArray(newArray)
   }
@@ -366,7 +412,17 @@ function WordArrayGame() {
       }catch{}
     }
     else
-      audioRef.current.setAttribute("src", sound)
+      // If its currently playing try again in a few milliseconds
+      if(!audioRef.current.paused){
+        setTimeout(() => {
+          playSound(sound)
+          
+        }, 100);
+        return
+      }
+      // If its paused set the new sound
+      else
+        audioRef.current.setAttribute("src", sound)
 
     try{
       audioRef.current.play()            
@@ -390,7 +446,7 @@ function WordArrayGame() {
   // #endregion Helper Functions
 
   // ================================================================================
-  // #region Accuracy Checking
+  // #region Accuracy Checking: checkInputInprocess2, addPoints, correctStreakAdjuster
 
   function checkInputInprocess2(input, array){
     
@@ -697,6 +753,7 @@ function WordArrayGame() {
             setConfirmationNoise={setConfirmationNoise}                    
             wordSources={wordSources}
             setWordSources={setWordSources}
+            loadedArrays={loadedArrays}
           ></SettingsWindow>
         }
         {showDescription && 
