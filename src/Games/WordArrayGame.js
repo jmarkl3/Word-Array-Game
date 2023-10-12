@@ -11,6 +11,7 @@ import bellSound from "../Files/BellSounds.mp3"
 import keyboardSound from "../Files/KeyboardClickSound.mp3"
 import { type } from '@testing-library/user-event/dist/type'
 import DescriptionWindow from '../Components/DescriptionWindow'
+import { dateString } from '../functions'
 
 function WordArrayGame() {
     
@@ -223,15 +224,9 @@ function WordArrayGame() {
     function setInitialTime(){
 
       
-      let date = new Date()
-      startTimeRef.current = date.getFullYear() + "-" + 
-        (date.getMonth() + 1).toString().padStart(2, "0") + 
-        "-" + date.getDate().toString().padStart(2, "0") + 
-        "T" + date.getHours().toString().padStart(2, "0") + ":" + 
-        date.getMinutes().toString().padStart(2, "0") + ":" + 
-        date.getSeconds().toString().padStart(2, "0")    
-
-        startMSRef.current = date.getTime()       
+      let date = new Date()      
+      startTimeRef.current = dateString(date)   
+      startMSRef.current = date.getTime()       
 
       // To parse it:
       //let newDate = new Date(startTimeRef.current)
@@ -284,11 +279,9 @@ function WordArrayGame() {
   const [loadedArrays, setLoadedArrays] = useState({})
   function loadArrays(){
     let loadedArraysTemp = window.localStorage.getItem("savedArrays")
-    console.log("loaded arrays:")
-    console.log(JSON.parse(loadedArraysTemp))
     if(loadedArraysTemp)
       setLoadedArrays(JSON.parse(loadedArraysTemp))
-
+    
   }
 
   function wordStringToWordArray(string){
@@ -510,7 +503,7 @@ function WordArrayGame() {
     let currentPoints = points + newPoints
     // Calculate the number of seconds the user has been playing
     let date = new Date()
-    let seconds = (date.getTime() - startMSRef.current) / 1000
+    let seconds = (date.getTime() - startMSRef.current) / 1000    
 
     // Save the number of points in the db 
     

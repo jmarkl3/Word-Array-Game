@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { dateString } from '../functions'
 
 function Charts({name, close, logObject}) {
 
     useEffect(()=>{
       createPointsPerDay()
-      console.log(logObject)
     },[])
 
 
@@ -17,7 +17,7 @@ function Charts({name, close, logObject}) {
       Object.entries(logObject).forEach(logObjectEntry => {
         // The date without the time
         let date = logObjectEntry[0].split("T")[0]
-        
+  
         // If there is not an object for this date already add an empty object there
         if(!dailyValuesObject[date]){
           dailyValuesObject[date] = {}          
@@ -55,7 +55,7 @@ function Charts({name, close, logObject}) {
           }
 
         })
-        
+
         // Calculate the points per second
         if(dailyValuesObject[date]?.points && dailyValuesObject[date]?.seconds){
           dailyValuesObject[date].pointsPerSecond = dailyValuesObject[date].points / dailyValuesObject[date].seconds
@@ -65,11 +65,22 @@ function Charts({name, close, logObject}) {
 
       // Convert that object into an array so the chart can display it
       let tempDailyValuesObjectArray = []
+      let earliestDate = new Date()
+      let latestDate = new Date()
       Object.entries(dailyValuesObject).forEach(dailyEntry => {
         let tempObject = {}
         let date = dailyEntry[0]
         let values = dailyEntry[1]
         
+        let dateOfThisEntry = new Date(date)
+        // Have to add 1 because its an index by default
+        dateOfThisEntry.setDate(dateOfThisEntry.getDate() + 1)
+
+        if(dateOfThisEntry < earliestDate)
+          earliestDate = dateOfThisEntry
+        if(dateOfThisEntry >= latestDate)
+          latestDate = dateOfThisEntry
+
         tempObject.date = date
         // Add each key value pair (this is better than hard coding because any new pairs will be added automatically)
         Object.entries(values).forEach(kvPair => {          
@@ -79,8 +90,31 @@ function Charts({name, close, logObject}) {
         })
         // Put the object into the array
         tempDailyValuesObjectArray.push(tempObject)
-      })
-      setDailyValues(tempDailyValuesObjectArray)
+      })      
+
+      // Create an object that has all the dates between the earliest and latest day
+      let allDatesArray = []
+      let dateCounter = new Date(earliestDate.getTime())
+
+      while(dateCounter <= latestDate){
+        // If this date is in the dailyValuesObject add it with those values, else add it with 0s
+        if(dailyValuesObject[dateString(dateCounter, true)])
+          allDatesArray.push({...dailyValuesObject[dateString(dateCounter, true)], date: dateString(dateCounter, true)})
+        else
+          allDatesArray.push({
+            date: dateString(dateCounter, true),
+            points: 0,
+            seconds: 1,
+            arrayLength: 0,
+            pointsPerSecond: 0,
+          })
+
+        // Increment the date counter by one day
+        dateCounter.setDate(dateCounter.getDate() + 1)
+      }
+
+      // Setting this to an array with all of the dates and the values to graph
+      setDailyValues(allDatesArray)
       
     }
 
