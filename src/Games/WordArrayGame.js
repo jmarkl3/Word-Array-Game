@@ -13,6 +13,43 @@ import { type } from '@testing-library/user-event/dist/type'
 import DescriptionWindow from '../Components/DescriptionWindow'
 import { dateString } from '../functions'
 
+/*
+
+  1) useEffect setUpKeyPress is called 
+      listens for spacebar which calls next
+
+  2) when button is pressed start is called
+      sets initial time and started flag
+      calls startReading
+
+  3) startReading
+      creates an array and adds it to the top of the array of arrays with createArray
+      sets the index to the top
+      sets keyInput flag to false so the input is hidden and the words (first word because index is 0) are shown
+
+  4) on spacebar push 
+      next is called
+
+  5) next
+      if all words have shown calls startInput to start input mode
+      else speaks the word
+      and increments wordIndex so the next word is shown
+
+  6) startInput
+      setKeyInput(true) so the keyboard shows
+      clears and focuses on the input bar
+
+  7) input onChange: checkInputInprocess2
+      checks the input words to the expected words
+      plays sounds if there is a correct word or the whold array of words is correct
+      if input is complete calls a position movement function: oneDepper, oneUp or toReadingMode
+
+  8) toReadingMode
+      sets movement flag and adds to itteration cound
+      calls startReading (3)
+
+*/
+
 function WordArrayGame() {
     
   // ================================================================================
@@ -36,6 +73,7 @@ function WordArrayGame() {
   const [arrayLength, setArrayLength] = useState(4)
   const [arrayDepth, setArrayDepth] = useState(4)
   const [speak, setSpeak] = useState(true)
+  const [addWords, setAddWords] = useState(true)
   const [confirmationNoise, setConfirmationNoise] = useState(true)
 
   // Keep track of number in a row for changing difficulty
@@ -395,7 +433,7 @@ function WordArrayGame() {
     setShowHint(true)
   }
 
-  const audioRef = useRef
+  const audioRef = useRef()
   function playSound(sound){
     if(!sound) return
 
@@ -632,7 +670,8 @@ function WordArrayGame() {
 
   function startReading(){    
     // Creates a new word array and adds it to the head of the array of word arrays
-    createArray()
+    if(addWords)
+      createArray()
     
     // Look at the first word in the top word array
     setWordIndex(0)
@@ -747,6 +786,8 @@ function WordArrayGame() {
             wordSources={wordSources}
             setWordSources={setWordSources}
             loadedArrays={loadedArrays}
+            setAddWords={setAddWords}
+            addWords={addWords}
           ></SettingsWindow>
         }
         {showDescription && 

@@ -39,7 +39,7 @@ M
 machine, main, make, male, man, many, map, mark, market, marry, matter, may, me, meal, mean, measure, meat, medicine, meet, member, mention, method, middle, milk, million, mind, minute, miss, model, modern, moment, money, monkey, month, moon, more, morning, most, mother, mountain, mouth, move, much, music, must, my.
 N
 
-name, narrow, nation, nature, near, nearly, neck, need, needle, neighbour, neither, net, never, new, news, newspaper, next, nice, night, nine, no, noble, noise, none, nor, north, nose, not, nothing, notice, now, number.
+name, narrow, nation, nature, near, nearly, neck, need, needle, neighbor, neither, net, never, new, news, newspaper, next, nice, night, nine, no, noble, noise, none, nor, north, nose, not, nothing, notice, now, number.
 O
 
 obey, object, ocean, of, off, offer, office, often, oil, old, on, one, only, open, opposite, or, orange, order, other, our, out, outside, over, own.

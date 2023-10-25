@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, wordSource, setWordSource, wordSources, setWordSources}) {
+function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, setAddWords, addWords, wordSource, setWordSource, wordSources, setWordSources}) {
 
     const arrayLengthInput = useRef()
     const arrayDepthInput = useRef()
@@ -78,6 +78,15 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                         defaultChecked={speak} 
                         ref={speakInput} 
                         onClick={()=>setSpeak(speakInput.current.checked)}
+                    ></input>
+                </div>
+                <div className='settingsRow' title='If new arrays of words will be added'>
+                    Add Words
+                    {/* https://www.w3schools.com/howto/howto_css_switch.asp */}
+                    <input 
+                        type='checkbox' 
+                        defaultChecked={addWords} 
+                        onClick={(e)=>setAddWords(e.target.checked)}
                     ></input>
                 </div>
                 <div className='sources'>
