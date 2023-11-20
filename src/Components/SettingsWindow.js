@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, setAddWords, addWords, wordSource, setWordSource, wordSources, setWordSources}) {
+function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArrayDepth, speak, setSpeak, setAddWords, addWords, wordSource, setWordSource, wordSources, setWordSources, usePrevious, setUsePrevious, randomPrevious, setRandomPrevious}) {
 
     const arrayLengthInput = useRef()
     const arrayDepthInput = useRef()
@@ -87,6 +87,24 @@ function SettingsWindow({close, arrayLength, setArrayLength, arrayDepth, setArra
                         type='checkbox' 
                         defaultChecked={addWords} 
                         onClick={(e)=>setAddWords(e.target.checked)}
+                    ></input>
+                </div>
+                <div className='settingsRow' title='Use Previous arrays instead of generating new ones'>
+                    Use Previous
+                    {/* https://www.w3schools.com/howto/howto_css_switch.asp */}
+                    <input 
+                        type='checkbox' 
+                        defaultChecked={usePrevious} 
+                        onClick={(e)=>setUsePrevious(e.target.checked)}
+                    ></input>
+                </div>
+                <div className='settingsRow' title='Use a random previous array instead of the most recent'>
+                    Random Previous
+                    {/* https://www.w3schools.com/howto/howto_css_switch.asp */}
+                    <input 
+                        type='checkbox' 
+                        defaultChecked={randomPrevious} 
+                        onClick={(e)=>setRandomPrevious(e.target.checked)}
                     ></input>
                 </div>
                 <div className='sources'>

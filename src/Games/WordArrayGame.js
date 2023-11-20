@@ -74,6 +74,8 @@ function WordArrayGame() {
   const [arrayDepth, setArrayDepth] = useState(4)
   const [speak, setSpeak] = useState(true)
   const [addWords, setAddWords] = useState(true)
+  const [usePrevious, setUsePrevious] = useState(true)
+  const [randomPrevious, setRandomPrevious] = useState(true)
   const [confirmationNoise, setConfirmationNoise] = useState(true)
 
   // Keep track of number in a row for changing difficulty
@@ -277,6 +279,10 @@ function WordArrayGame() {
   // #region Array Generation
 
   const sentenceIndex = useRef(0)
+  /**
+    Called when it starts and also when going back to reading mode after input.
+
+  */  
   function createArray(){
         
     if(wordSources.podcast){
@@ -287,10 +293,23 @@ function WordArrayGame() {
       return
     }
 
-    // Create a new array and put 10 random words in it
+    // The array that will hold the new array of words
     var newWordsArray = []
-    for(var i=0; i<arrayLength; i++)
-      newWordsArray.push(globalWordArray.current[Math.floor(Math.random() * globalWordArray.current.length)])
+    // Add from old arrays
+    if(usePrevious){
+      // console.log("loading previous")
+      // look in loaded arrays for an array that has a length that matches arrayLength 
+      newWordsArray = loadArrayOfLength(arrayLength)
+      if(!newWordsArray)
+        newWordsArray = generateRandomWordArray(arrayLength)
+    }
+    // Create a new array of words
+    else{
+      // console.log("generating new array")
+      // Create a new array and put 10 random words in it
+      newWordsArray = generateRandomWordArray(arrayLength)
+
+    }
 
     if(speak)
       speakWord(newWordsArray[0])  
@@ -298,6 +317,65 @@ function WordArrayGame() {
     // Adds the new word array at the head of the 2d array that holds word arrays
     addAtHead(newWordsArray)
   } 
+  function loadArrayOfLength(length){
+    let foundArray
+    // console.log("loadArrayOfLength length: "+length+" loadedArrays:")
+    // console.log(loadedArrays)
+    if(loadedArrays && typeof loadedArrays === "object" && Object.entries(loadedArrays).length > 0){
+      // console.log("loadArrayOfLength b")
+      let randomSkip = Math.floor(Math.random() * Object.entries(loadedArrays).length)
+      // console.log("randomSkip: " + randomSkip)
+      let c = 0
+      Object.entries(loadedArrays).forEach((([date, loadedArrayOfWordArrays]) => {
+
+        // console.log("loadedArrayOfWordArrays")
+        // console.log(loadedArrayOfWordArrays)
+
+        // Skip a random number of dates
+        if(randomPrevious){
+          c++
+          if(c < randomSkip) return
+        }
+
+        // If an array was found return
+        if(foundArray) {
+          // console.log("already found an array:")
+          // console.log(foundArray)
+          return
+        }
+
+
+  
+        // Look at each array of words in that data object
+        loadedArrayOfWordArrays.forEach(loadedWordArray => {
+          // console.log("looking at word array: ")
+          // console.log(loadedWordArray)
+
+          // If the length matches what its looking for save it
+          if(loadedWordArray.length == length){
+            // console.log("found array with matching length:")
+            // console.log(loadedWordArray)
+            foundArray = [...loadedWordArray]
+          }
+
+        })
+
+      }))
+      
+    }
+
+    // console.log("foundArray")
+    // console.log(foundArray)
+    // If none was found this will be undefined
+    return foundArray
+
+  }
+  function generateRandomWordArray(length){
+    let newWordsArray = []
+    for(var i=0; i<length; i++)
+        newWordsArray.push(globalWordArray.current[Math.floor(Math.random() * globalWordArray.current.length)])
+    return newWordsArray
+  }
   /**
    * Save the array in local storage so it can be used as a starting point later
    */ 
@@ -308,8 +386,8 @@ function WordArrayGame() {
     // Add the array to the object and put it in local storage
     tempLoadedArrays[startTimeRef.current] = array
 
-    console.log("saving arrays:")
-    console.log(tempLoadedArrays)
+    // console.log("saving arrays:")
+    // console.log(tempLoadedArrays)
 
     window.localStorage.setItem("savedArrays", JSON.stringify(tempLoadedArrays))
 
@@ -788,6 +866,10 @@ function WordArrayGame() {
             loadedArrays={loadedArrays}
             setAddWords={setAddWords}
             addWords={addWords}
+            usePrevious={usePrevious}
+            setUsePrevious={setUsePrevious}
+            randomPrevious={randomPrevious}
+            setRandomPrevious={setRandomPrevious}
           ></SettingsWindow>
         }
         {showDescription && 
